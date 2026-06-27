@@ -196,16 +196,6 @@ Additional documentation is available in this repository.
 * Environment variable based configuration
 * No API keys exposed in the frontend
 
----
-
-# Future Improvements
-
-* Mobile application
-* Push notifications
-* Smart scheduling automation
-* Wear OS support
-* Team collaboration workspace
-* Advanced analytics dashboard
 
 ---
 

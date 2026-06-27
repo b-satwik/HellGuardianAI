@@ -5,6 +5,15 @@
 HellGuardian AI is an intelligent productivity assistant that helps users avoid missed deadlines, reduce burnout, and manage their workload proactively. Instead of sending passive reminders, it analyzes Google Workspace data using Gemini AI and provides personalized plans, task prioritization, email summaries, and schedule recommendations.
 
 ---
+## Highlights
+
+- 🤖 AI-powered autonomous productivity assistant
+- 📅 Google Calendar, Gmail, Tasks & Drive integration
+- 🧠 Gemini-powered multi-agent planning
+- 🔐 Firebase Authentication & Firestore Security Rules
+- ☁️ Deployed on Firebase Hosting & Cloud Functions
+
+---
 
 ## Live Demo
 

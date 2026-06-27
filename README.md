@@ -1,217 +1,194 @@
-# HellGuardian AI
+# 🛡️ HellGuardian AI
 
-> **An AI-powered autonomous productivity operating system built for the Google AI Hackathon 2026.**
-
-HellGuardian AI is an intelligent productivity assistant that helps users avoid missed deadlines, reduce burnout, and manage their workload proactively. Instead of sending passive reminders, it analyzes Google Workspace data using Gemini AI and provides personalized plans, task prioritization, email summaries, and schedule recommendations.
-
----
-## Highlights
-
-- 🤖 AI-powered autonomous productivity assistant
-- 📅 Google Calendar, Gmail, Tasks & Drive integration
-- 🧠 Gemini-powered multi-agent planning
-- 🔐 Firebase Authentication & Firestore Security Rules
-- ☁️ Deployed on Firebase Hosting & Cloud Functions
+> Autonomous Productivity OS and Time Protector for the Google AI Hackathon.
 
 ---
 
-## Live Demo
+## 📋 Project Overview
 
-**Website**
+HellGuardian AI is an autonomous, agentic productivity operating system designed to shield users from timeline breaches, manage cognitive load, and optimize scheduling velocity. 
 
-https://hellguardianai-9cf98.web.app
-
-**GitHub Repository**
-
-https://github.com/b-satwik/HellGuardianAI
+Traditional reminder apps require constant manual input and passive alarm dismissals. HellGuardian AI is different: it integrates directly with Google Workspace, uses Gemini AI for agentic decision-making, predicts burnout, detects task dependency bottlenecks, and features an interactive hands-free Voice Assistant and a terminal command console to actively keep you on track.
 
 ---
 
-# Problem Statement
+## 🚀 Live Demo & Links
 
-**Google AI Hackathon**
-
-**The Last-Minute Life Saver**
-
-Build an AI-powered assistant that helps users manage deadlines, organize work, and avoid last-minute stress.
+*   **Live Demo**: [https://hellguardianai-9cf98.web.app](https://hellguardianai-9cf98.web.app)
+*   **GitHub Repository**: [https://github.com/b-satwik/HellGuardianAI](https://github.com/b-satwik/HellGuardianAI)
 
 ---
 
-# Key Features
+## ✨ Key Features
 
-## AI Productivity Assistant
+### 🤖 AI Features
+*   **Daily Planner**: Compiles optimal task lists and mission paths using workspace caches.
+*   **Email Summarizer**: Scrapes latest Gmail threads and extracts core action items.
+*   **Deadline Prediction**: Forecasts potential schedule slips based on active tasks and priority counts.
+*   **Burnout Analysis**: Measures workload stress levels using task count and complexity factors.
+*   **Task Prioritization**: Auto-assigns threat levels (Critical, High, Medium, Low) to tasks.
 
-* AI-powered daily planner
-* Task prioritization
-* Deadline prediction
-* Burnout risk estimation
-* Focus Mode dashboard
+### 🔌 Google Workspace Integration
+*   **Gmail**: Real-time email status logs and summaries.
+*   **Calendar**: Interactive scheduler feed showing meeting conflicts and optimal slots.
+*   **Tasks**: Actionable checklists showing risk scores and task dependencies.
+*   **Drive**: Summarizes stored research documents and draft PDFs.
+*   **People API**: Imports advisor and supervisor contacts for direct communication.
 
-## Google Workspace Integration
+### 🎙️ Voice Features
+*   **Speech Recognition**: Natural voice command input.
+*   **Text-to-Speech**: Speech-synthesized audio feedback.
+*   **Continuous Conversation**: Allows multi-turn continuous vocal dialogue.
+*   **Voice Commands**: Hands-free triggers like `/focus`, `/status`, and `/plan`.
 
-* Gmail summaries
-* Google Calendar synchronization
-* Google Tasks integration
-* Google Drive document summaries
-* Google People API integration
-
-## Voice Assistant
-
-* Speech-to-text commands
-* Text-to-speech responses
-* Continuous conversation mode
-* Voice interruption support
-
-## Multi-Agent AI
-
-* Planner Agent
-* Scheduler Agent
-* Email Agent
-* Risk Analysis Agent
-* Coordinator Agent
+### 🖥️ Productivity Dashboard
+*   **Focus Mode**: Complete visual lockdown screen that redirects focus to high-priority tasks.
+*   **Analytics**: Metrics tracking task completion probability and energy expenditure.
+*   **Terminal UI**: Draggable CLI console for power users with shortcut commands.
+*   **Notifications**: Real-time status toasts for task injections and timeline breaches.
 
 ---
 
-# Google Technologies Used
+## 🛠️ Google Technologies Used
 
-* Google Gemini 1.5 Flash
-* Firebase Authentication
-* Cloud Firestore
-* Firebase Hosting
-* Firebase Cloud Functions
-* Google Calendar API
-* Gmail API
-* Google Tasks API
-* Google Drive API
-* Google People API
+*   **Gemini AI**: Generates intelligence streams, summarizes workspace items, and manages tasks.
+*   **Firebase Authentication**: Secures user workspace sessions and manages sign-ins.
+*   **Cloud Firestore**: Document-based real-time database partitioning user caches.
+*   **Cloud Functions**: Serverless HTTPS endpoints hosting proxy and background jobs.
+*   **Firebase Hosting**: Delivers the low-latency dashboard frontend.
+*   **Google Workspace APIs**: Integrated scopes for Gmail, Calendar, Tasks, Drive, and People.
 
 ---
 
-# Tech Stack
+## ⚙️ Technology Stack
 
-### Frontend
-
-* React
-* TypeScript
-* Vite
-* Tailwind CSS
-
-### Backend
-
-* Firebase Cloud Functions
-* Firebase Authentication
-* Firestore
-
-### AI
-
-* Google Gemini
+| Layer | Technology |
+| :--- | :--- |
+| **Frontend** | React, Vite, TypeScript, Framer Motion, Lucide Icons, Tailwind CSS |
+| **Backend** | Node.js, Firebase Cloud Functions (v2) |
+| **Database** | Cloud Firestore |
+| **AI** | Gemini 1.5 Flash |
+| **Deployment** | Firebase Hosting & Cloud Functions |
 
 ---
 
-# Project Architecture
+## 📐 Architecture
+
+```mermaid
+graph TD
+    User([User])
+    UI[React + Vite Frontend]
+    Auth[Firebase Authentication]
+    Dashboard[Dashboard / Voice Assistant / Google Services]
+    Functions[Cloud Functions]
+    Gemini[Gemini AI]
+    Workspace[Google Workspace APIs]
+    Firestore[(Cloud Firestore)]
+
+    User --> UI
+    UI --> Auth
+    UI --> Dashboard
+    Dashboard --> Functions
+    Functions --> Gemini
+    Functions --> Workspace
+    Functions --> Firestore
+    Dashboard --> Firestore
+```
+
+---
+
+## 📂 Repository Structure
 
 ```text
-User
-      │
-      ▼
-React + TypeScript Frontend
-      │
-      ▼
-Firebase Authentication
-      │
-      ▼
-Cloud Functions
-      │
-      ▼
-Gemini AI
-      │
-      ▼
-Firestore Database
-      │
-      ▼
-Google Workspace APIs
-```
-
----
-
-# Repository Structure
-
-```
 HellGuardianAI/
-
-├── src/
-├── functions/
-├── docs/
-├── firebase.json
-├── firestore.rules
+├── .firebase/           # Firebase Cache
+├── dist/                # Frontend Build Output
+├── functions/           # Firebase Cloud Functions (Backend)
+│   ├── index.js         # Core Backend Logic (geminiProxy, dailyPlanner, etc.)
+│   └── package.json
+├── src/                 # React Frontend
+│   ├── components/      # UI Components (VoiceAssistant, Analytics, CLI)
+│   ├── config/          # Configurations (env.config.ts)
+│   ├── context/         # AuthContext.tsx
+│   ├── firebase/        # config.ts
+│   ├── pages/           # DashboardPage.tsx, LoginPage.tsx
+│   ├── services/        # geminiService.ts, googleServices.ts
+│   └── main.tsx
 ├── package.json
+├── firestore.rules
 └── README.md
 ```
 
 ---
 
-# Installation
+## ⚡ Installation & Deployment
 
-Clone the repository
-
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/b-satwik/HellGuardianAI.git
 cd HellGuardianAI
 ```
 
-Install dependencies
-
-```bash
-npm install
-cd functions
-npm install
+### 2. Configure Environment Variables
+Create a `.env` file in the root directory:
+```env
+VITE_GEMINI_PROXY_URL=https://your-gemini-proxy-url-here
+VITE_OAUTH_CLIENT_ID=YOUR_GOOGLE_OAUTH_CLIENT_ID
+VITE_FIREBASE_API_KEY=YOUR_FIREBASE_API_KEY
+VITE_FIREBASE_AUTH_DOMAIN=your-app.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-app.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=sender-id
+VITE_FIREBASE_APP_ID=app-id
+VITE_FIREBASE_MEASUREMENT_ID=measurement-id
 ```
 
-Create a `.env` file using `.env.example`.
+### 3. Install Dependencies
+```bash
+# Frontend
+npm install
 
-Run locally
+# Backend
+cd functions
+npm install
+cd ..
+```
 
+### 4. Run Locally
 ```bash
 npm run dev
 ```
 
-Deploy
-
+### 5. Deploy to Firebase
 ```bash
 firebase deploy
 ```
 
 ---
 
-# Documentation
+## 📖 Documentation
 
-Additional documentation is available in this repository.
-
-* Architecture.md
-* Installation.md
-* UserGuide.md
-* API_Documentation.md
-* Project_Description.md
-* Security_Report.md
-* Testing_Report.md
+*   [System Architecture](Architecture.md) — Technical specs, modules, and data flow.
+*   [API Documentation](API_Documentation.md) — Endpoint inputs, outputs, and JSON payloads.
+*   [Installation Guide](Installation.md) — Detailed setup, secrets, and Cloud Function setup.
+*   [User Guide](UserGuide.md) — Detailed user workflows and command indices.
 
 ---
 
-# Security
+## 🔒 Security
 
-* Firebase Authentication
-* Firestore Security Rules
-* Backend Gemini Proxy
-* Environment variable based configuration
-* No API keys exposed in the frontend
-
-
----
-
-# License
-
-Apache License 2.0
+*   **Firebase Authentication**: Secures sign-in and limits Firestore queries.
+*   **Firestore Rules**: Scopes database read/writes to `users/{uid}/` to prevent cross-user leakage.
+*   **Backend Gemini Proxy**: Routes LLM calls via Cloud Functions, keeping API keys safe.
+*   **Environment Variables**: Sensitive values are kept in environment variables rather than code.
+*   **Google OAuth Scopes**: Scopes Google token authorization to read-only access.
 
 ---
 
-Built for the **Google AI Hackathon 2026** by **Bala Satwik**.
+## 📄 License
+
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Built for Google AI Hackathon 2026 by Bala Satwik.

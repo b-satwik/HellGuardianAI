@@ -19,7 +19,10 @@ export const NotificationCenter: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setNotifications([]);
+      return;
+    }
 
     const unsub = onSnapshot(collection(db, `users/${user.uid}/notifications`), (snap) => {
       const items = snap.docs.map(doc => ({

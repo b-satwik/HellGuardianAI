@@ -36,18 +36,7 @@ export class MultiAgentEngine {
       const tasks = await this.getCollectionData<TaskItem>(`users/${uid}/tasks`);
       const events = await this.getCollectionData<CalendarEvent>(`users/${uid}/calendar_cache`);
       const emails = await this.getCollectionData<EmailFeed>(`users/${uid}/gmail_cache`);
-      let memories = await this.getCollectionData<AgentMemoryEntry>(`users/${uid}/agent_memory`);
-      if (memories.length === 0) {
-        const defaultMemories: AgentMemoryEntry[] = [
-          { id: 'mem-1', patternType: 'WORK_HOURS', observation: 'OPERATOR PEAK EXECUTION VELOCITY IS BETWEEN 10:00 AND 12:00.', impactScore: 85, timestamp: new Date().toISOString() },
-          { id: 'mem-2', patternType: 'BURNOUT_RISK', observation: 'COGNITIVE STRESS SPIKES ON THURSDAYS (DUE TO TASK CLUSTERING).', impactScore: 75, timestamp: new Date().toISOString() },
-          { id: 'mem-3', patternType: 'VELOCITY', observation: 'OPERATOR MOVES 30% SLOWER ON WORKSPACE DATABASE TASK LABELS.', impactScore: 60, timestamp: new Date().toISOString() }
-        ];
-        for (const m of defaultMemories) {
-          await setDoc(doc(db, `users/${uid}/agent_memory`, m.id), m);
-        }
-        memories = defaultMemories;
-      }
+      const memories = await this.getCollectionData<AgentMemoryEntry>(`users/${uid}/agent_memory`);
 
       const activeTasks = tasks.filter(t => t.status === 'needsAction');
       const upcomingEvents = events.slice(0, 5);

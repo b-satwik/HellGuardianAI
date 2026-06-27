@@ -16,7 +16,14 @@ export const AnalyticsView: React.FC = () => {
 
   // 1. Listen to real-time collections
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setTasks([]);
+      setAiPlan({
+        burnoutIndex: 0,
+        focusScore: 0
+      });
+      return;
+    }
 
     const unsubTasks = onSnapshot(collection(db, `users/${user.uid}/tasks`), (snap) => {
       const items = snap.docs.map(doc => doc.data() as TaskItem);

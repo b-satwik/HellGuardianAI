@@ -10,7 +10,7 @@ import {
   sendPasswordResetEmail,
   sendEmailVerification,
   linkWithPopup,
-  browserSessionPersistence,
+  browserLocalPersistence,
   setPersistence,
   updateProfile
 } from 'firebase/auth';
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Set default session persistence (local storage session persistence)
   useEffect(() => {
-    setPersistence(auth, browserSessionPersistence).catch((err) => {
+    setPersistence(auth, browserLocalPersistence).catch((err) => {
       console.error('Persistence configuration failed:', err);
     });
   }, []);

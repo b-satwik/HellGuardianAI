@@ -18,5 +18,6 @@ export const googleProvider = new GoogleAuthProvider();
 googleProvider.addScope('https://www.googleapis.com/auth/calendar.readonly');
 googleProvider.addScope('https://www.googleapis.com/auth/tasks.readonly');
 googleProvider.addScope('https://www.googleapis.com/auth/gmail.readonly');
+googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 export default app;

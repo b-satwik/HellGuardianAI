@@ -31,99 +31,60 @@ export class GeminiService {
     history: { role: 'user' | 'model'; parts: string }[],
     callbacks: StreamCallbacks
   ) {
-    const apiKey = EnvConfig.geminiApiKey;
-    
-    // Structure conversation history for Gemini
-    const contents = [
-      ...history.map(h => ({
-        role: h.role === 'model' ? 'model' : 'user',
-        parts: [{ text: h.parts }]
-      })),
-      {
-        role: 'user',
-        parts: [{ text: prompt }]
+    // Structure conversation history for Gemini by flattening it into the prompt if present
+    let formattedPrompt = '';
+    if (history && history.length > 0) {
+      formattedPrompt += "Conversation history:\n";
+      for (const msg of history) {
+        const sender = msg.role === 'model' ? 'HELLGUARDIAN' : 'OPERATOR';
+        formattedPrompt += `${sender}: ${msg.parts}\n`;
       }
-    ];
+      formattedPrompt += `OPERATOR: ${prompt}\nHELLGUARDIAN:`;
+    } else {
+      formattedPrompt = prompt;
+    }
 
     try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:streamGenerateContent?alt=sse&key=${apiKey}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            contents,
-            systemInstruction: {
-              parts: [{ text: SYSTEM_INSTRUCTION }]
-            },
-            generationConfig: {
-              temperature: 0.4,
-              maxOutputTokens: 1024,
-            }
-          })
-        }
-      );
+      const proxyUrl = EnvConfig.geminiProxyUrl;
+      const response = await fetch(proxyUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: formattedPrompt,
+          systemInstruction: SYSTEM_INSTRUCTION
+        })
+      });
 
       if (!response.ok) {
         throw new Error(`API HTTP Error: ${response.status}`);
       }
 
-      const reader = response.body?.getReader();
-      if (!reader) {
-        throw new Error('Response body reader not available.');
+      const data = await response.json();
+      const text = data.text || '';
+
+      if (!text) {
+        throw new Error('Empty response from proxy');
       }
 
-      const decoder = new TextDecoder('utf-8');
-      let buffer = '';
-      let fullText = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        
-        // Save the last incomplete line back into the buffer
-        buffer = lines.pop() || '';
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const dataStr = line.replace('data: ', '').trim();
-            if (dataStr === '[DONE]') continue;
-            
-            try {
-              const parsed = JSON.parse(dataStr);
-              const chunkText = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
-              if (chunkText) {
-                fullText += chunkText;
-                callbacks.onChunk(chunkText);
-              }
-            } catch (e) {
-              // Ignore partial JSON parsing errors in streaming
-            }
-          }
+      // Simulate streaming chunk by chunk (typewriter effect) for the frontend UI
+      let index = 0;
+      const streamSim = () => {
+        if (index < text.length) {
+          // Stream 4 characters at a time for high speed
+          const chunk = text.substring(index, index + 4);
+          callbacks.onChunk(chunk);
+          index += 4;
+          setTimeout(streamSim, 8);
+        } else {
+          callbacks.onComplete(text);
         }
-      }
-
-      // Final clean up of buffer
-      if (buffer.startsWith('data: ')) {
-        try {
-          const parsed = JSON.parse(buffer.replace('data: ', '').trim());
-          const chunkText = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (chunkText) {
-            fullText += chunkText;
-            callbacks.onChunk(chunkText);
-          }
-        } catch (e) {}
-      }
-
-      callbacks.onComplete(fullText);
+      };
+      streamSim();
 
     } catch (err) {
-      console.warn('Gemini API stream failed. Initiating Autonomous Local Simulation Engine.', err);
+      console.warn('Gemini Proxy call failed. Initiating Autonomous Local Simulation Engine.', err);
       // Run high-fidelity simulated response generator
       this.runSimulatedResponse(prompt, callbacks);
     }

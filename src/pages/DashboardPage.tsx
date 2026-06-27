@@ -74,6 +74,7 @@ export const DashboardPage: React.FC = () => {
 
   // UI state
   const [emergencyLockdown, setEmergencyLockdown] = useState(false);
+  const [userDismissedLockdown, setUserDismissedLockdown] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   
   // Tasks Form State
@@ -97,6 +98,33 @@ export const DashboardPage: React.FC = () => {
 
   // Timer Countdown state (Threat countdown to nearest task)
   const [countdownStr, setCountdownStr] = useState('02:44:12');
+
+  // Reset all state when user session changes to prevent any visual data leakage
+  useEffect(() => {
+    setCalendarEvents([]);
+    setTasks([]);
+    setEmails([]);
+    setDecisions([]);
+    setMemories([]);
+    setToasts([]);
+    setEmergencyLockdown(false);
+    setUserDismissedLockdown(false);
+    setAiPlan({
+      suggestedMission: 'INITIALIZING ACTIVE THREAT SCAN...',
+      plannerReport: 'PENDING AGENT EXECUTION...',
+      schedulerReport: 'PENDING AUDIT...',
+      riskReport: 'CALCULATING PROBABILITIES...',
+      emailReport: 'SCANNING INGRESS ALERTS...',
+      recoveryReport: 'STANDBY...',
+      burnoutIndex: 0,
+      focusScore: 0
+    });
+    setAiThoughts([
+      'KERNEL BOOT SUCCESSFUL...',
+      'SCANNING WORKSPACE CHANNELS...',
+      'GUARDIAN ACTIVE AND WATCHING CALENDAR...'
+    ]);
+  }, [user?.uid]);
 
   // 1. Initial Google Sync on login
   useEffect(() => {
@@ -179,7 +207,7 @@ export const DashboardPage: React.FC = () => {
 
   // 3. Emergency Mode Auto-Activator (deadlines < 24 hrs or conflicts)
   useEffect(() => {
-    if (tasks.length === 0) return;
+    if (tasks.length === 0 || userDismissedLockdown) return;
     const now = Date.now();
     const hasCloseDeadline = tasks.some(t => {
       if (t.status === 'completed' || !t.due) return false;
@@ -190,7 +218,7 @@ export const DashboardPage: React.FC = () => {
     if (hasCloseDeadline) {
       setEmergencyLockdown(true);
     }
-  }, [tasks]);
+  }, [tasks, userDismissedLockdown]);
 
   // Countdown timer simulation
   useEffect(() => {
@@ -466,7 +494,10 @@ export const DashboardPage: React.FC = () => {
             &gt; COMPLETION PROBABILITY: {aiPlan.focusScore}%
           </div>
           <button
-            onClick={() => setEmergencyLockdown(false)}
+            onClick={() => {
+              setEmergencyLockdown(false);
+              setUserDismissedLockdown(true);
+            }}
             className="border-2 border-[#FF4040] text-[#FF4040] hover:bg-[#FF4040] hover:text-[#04070C] font-bold py-3 px-8 text-sm tracking-widest transition-all duration-300"
           >
             DISENGAGE FOCUS MODE

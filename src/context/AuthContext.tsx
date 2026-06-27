@@ -11,7 +11,8 @@ import {
   sendEmailVerification,
   linkWithPopup,
   browserSessionPersistence,
-  setPersistence
+  setPersistence,
+  updateProfile
 } from 'firebase/auth';
 import { auth, googleProvider } from '../firebase/config';
 
@@ -51,9 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       // Attempt to load Google Access Token from localStorage if user is authenticated
       if (currentUser) {
         const storedToken = localStorage.getItem(`google_token_${currentUser.uid}`);
-        if (storedToken) {
-          setGoogleToken(storedToken);
-        }
+        setGoogleToken(storedToken || null);
       } else {
         setGoogleToken(null);
       }
@@ -96,9 +95,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const result = await createUserWithEmailAndPassword(auth, email, pass);
       // Set display name
       if (result.user) {
-        // Simple update display name (note: we don't have updateProfile imported, let's use direct Firebase Auth update if needed or just handle displayName in Firestore)
-        // Wait, we can import updateProfile or do it directly
-        // Let's import updateProfile from firebase/auth for a production solution
+        await updateProfile(result.user, { displayName: name });
       }
     } catch (error) {
       console.error('Registration failed:', error);
@@ -149,12 +146,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     setLoading(true);
     try {
-      const currentUid = auth.currentUser?.uid;
       await signOut(auth);
       setGoogleToken(null);
-      if (currentUid) {
-        localStorage.removeItem(`google_token_${currentUid}`);
-      }
+      setUser(null);
+      localStorage.clear();
+      sessionStorage.clear();
+      console.log('User signed out, application storage reset.');
     } catch (error) {
       console.error('Logout failed:', error);
     } finally {

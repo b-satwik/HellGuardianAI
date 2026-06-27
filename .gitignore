@@ -2,12 +2,14 @@
 .env
 .env.*
 !.env.example
+*.local
 
 # Dependencies
 node_modules/
 
 # Build output
 dist/
+coverage/
 
 # Logs
 *.log
@@ -24,3 +26,16 @@ Thumbs.db
 .vscode/
 .idea/
 screenshots/
+
+# Secrets, private keys, certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+
+# Google Service Accounts & Firebase config
+service-account*.json
+firebase-admin*.json
+google-services.json
+GoogleService-Info.plist

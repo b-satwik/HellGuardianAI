@@ -13,7 +13,7 @@ const GEMINI_API_KEY = defineSecret("GEMINI_API_KEY");
  * HTTPS endpoint to safely query Gemini without exposing API keys
  */
 exports.geminiProxy = onRequest(
-  { secrets: [GEMINI_API_KEY] },
+  { secrets: [GEMINI_API_KEY], invoker: "public" },
   async (req, res) => {
     // CORS
     res.set("Access-Control-Allow-Origin", "*");
@@ -72,7 +72,7 @@ exports.geminiProxy = onRequest(
  * Simulated backend planner
  */
 exports.dailyPlanner = onRequest(
-  { secrets: [GEMINI_API_KEY] },
+  { secrets: [GEMINI_API_KEY], invoker: "public" },
   async (req, res) => {
     const db = admin.firestore();
 
@@ -137,7 +137,7 @@ ${JSON.stringify(events)}
  * 3. Email Summarizer
  */
 exports.emailSummarizer = onRequest(
-  { secrets: [GEMINI_API_KEY] },
+  { secrets: [GEMINI_API_KEY], invoker: "public" },
   async (req, res) => {
     const { emailContent } = req.body || {};
 
